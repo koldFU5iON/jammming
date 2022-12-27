@@ -9,7 +9,8 @@ export class TrackList extends Component {
                 {this.props.tracks.map(track => {
                     return (
                         <Track track={track} 
-                        isRemoval={false} />
+                        isRemoval={false} 
+                        onAdd={this.props.onAdd}/>
                     )
                 })}
             </div>

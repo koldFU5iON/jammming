@@ -41,9 +41,10 @@ class App extends Component {
   }
 
   addTrack(track){
-    if(!this.playlistTracks.find(playlistTrack => playlistTrack.id === track.id)){
-      this.playlistTracks.push(track)
+    if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+      return;
     }
+    this.state.playlistTracks.push(track)
   }
 
   render(){
