@@ -8,12 +8,7 @@ export class Track extends Component {
 
         this.renderAction = this.renderAction.bind(this)
     }
-    renderAction() {
-        console.log('hello I ran')
-        return 'hello'
-            // this.props.isRemoval ? '-' : '+'
-
-    }
+    renderAction() { return this.props.isRemoval ? '-' : '+' }
     render() {    
         return (
             <div className="Track">
@@ -23,8 +18,8 @@ export class Track extends Component {
                     {this.props.track.artist} | {this.props.track.album}
                 </p>
                 </div>
-                <button className="Track-action" onClick={this.renderAction}> 
-                    {this.renderAction}
+                <button className="Track-action"> 
+                    {this.renderAction()}
                 </button>
             </div>
             )
