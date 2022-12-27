@@ -4,12 +4,12 @@ export class TrackList extends Component {
     render(){
         return (
             <div className="TrackList" >
-                {this.props.results.map(track => {
+                {this.props.tracks.map(track => {
                     return (
                     <div key={track.id}>
-                        name: {track.name}
-                        album: {track.album}
-                        artist: {track.album}
+                        name: {track.name} <br/>
+                        album: {track.album} <br/>
+                        artist: {track.album} <br/>
                     </div>
                     )
                 })}

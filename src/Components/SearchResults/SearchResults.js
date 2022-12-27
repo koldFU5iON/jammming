@@ -6,7 +6,7 @@ export class SearchResults extends Component {
     return (
         <div className="SearchResults">
             <h2>Results</h2>
-            <TrackList searchResults={this.props.results}/>
+            <TrackList tracks={this.props.tracks}/>
         </div>
     )
   }
