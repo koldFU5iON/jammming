@@ -24,6 +24,14 @@ class App extends Component {
         id: 'id'
       }]
     }
+
+    this.addTrack = this.addTrack.bind(this);
+  }
+
+  addTrack(track){
+    if(!this.playlistTracks.find(playlistTrack => playlistTrack.id === track.id)){
+      this.playlistTracks.push(track)
+    }
   }
 
   render(){
@@ -33,8 +41,12 @@ class App extends Component {
         <div className="App">
         <SearchBar />
           <div className="App-playlist">
-            <SearchResults tracks={this.state.searchResults} />
-            <Playlist name={this.state.playlistName} tracks={this.state.playlistTracks}/> 
+            <SearchResults 
+              tracks={this.state.searchResults}
+              onAdd={this.addTrack} />
+            <Playlist 
+              name={this.state.playlistName}
+              tracks={this.state.playlistTracks}/> 
           </div>
         </div>
       </div>
