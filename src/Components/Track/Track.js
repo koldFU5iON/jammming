@@ -1,31 +1,33 @@
 import React, { Component } from 'react';
+import './Track.css'
 
-class Track extends Component {
+
+export class Track extends Component {
+    constructor(props){
+        super(props)
+
+        this.renderAction = this.renderAction.bind(this)
+    }
     renderAction() {
-        return(
-            <div>
-                <button onClick={this.props.isRemoval}>
-                    {this.props.isRemoval ? '-' : '+'}
-                </button>
-            </div>
-        )
+        console.log('hello I ran')
+        return 'hello'
+            // this.props.isRemoval ? '-' : '+'
 
     }
-  render() {    
-    return (
-        <div className="Track">
-            <div className="Track-information">
-            <h3><Track /></h3>
-            <p>
-                {/* <!-- track artist will go here--> | <!-- track album will go here --> */}
-            </p>
+    render() {    
+        return (
+            <div className="Track">
+                <div className="Track-information">
+                <h3>{this.props.track.name}</h3>
+                <p>
+                    {this.props.track.artist} | {this.props.track.album}
+                </p>
+                </div>
+                <button className="Track-action" onClick={this.renderAction}> 
+                    {this.renderAction}
+                </button>
             </div>
-            <button className="Track-action">
-                {/* <!-- + or - will go here --> */}
-            </button>
-        </div>
-        )
-  }
+            )
+    }
 }
  
-export default Track;

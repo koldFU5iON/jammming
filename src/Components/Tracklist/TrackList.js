@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Track } from '../Track/Track.js'
+import './TrackList.css'
 
 export class TrackList extends Component {
     render(){
@@ -6,11 +8,8 @@ export class TrackList extends Component {
             <div className="TrackList" >
                 {this.props.tracks.map(track => {
                     return (
-                    <div key={track.id}>
-                        name: {track.name} <br/>
-                        album: {track.album} <br/>
-                        artist: {track.album} <br/>
-                    </div>
+                        <Track track={track} 
+                        isRemoval={false} />
                     )
                 })}
             </div>
