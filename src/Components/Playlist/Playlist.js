@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { TrackList } from './TrackList/TrackList'
+import { TrackList } from '../Tracklist/TrackList.js'
 
-class Playlist extends Component {
+export class Playlist extends Component {
     render() { 
         return (
             <div className="Playlist">
@@ -13,4 +13,3 @@ class Playlist extends Component {
     }
 }
  
-export default Playlist;
