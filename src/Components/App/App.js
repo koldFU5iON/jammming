@@ -99,7 +99,7 @@ class App extends Component {
   }
 
   search(term){
-    console.log(termpwe)
+    console.log(term)
   }
 
   render() {
