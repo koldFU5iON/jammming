@@ -38,18 +38,28 @@ class App extends Component {
     }
 
     this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
   }
 
   addTrack(track){
     const tracks = this.state.playlistTracks
 
-    if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+    if (tracks.find(savedTrack => savedTrack.id === track.id)) {
       return;
     }
 
     tracks.push(track)
     this.setState({
       playlistTracks: tracks
+    })
+  }
+
+  removeTrack(track){
+    let tracks = this.state.playlistTracks
+    let newTracklist = tracks.filter(savedTracks => savedTracks.id !== track.id)
+
+    this.setState({
+      playlistTracks: newTracklist
     })
   }
 
@@ -67,6 +77,7 @@ class App extends Component {
             <Playlist 
               name={this.state.playlistName}
               tracks={this.state.playlistTracks}
+              onRemove={this.removeTrack}
               isRemoval={true}/> 
           </div>
         </div>
