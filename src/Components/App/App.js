@@ -4,45 +4,16 @@ import "./App.css";
 import { SearchBar } from "../SearchBar/SearchBar.js";
 import { SearchResults } from "../SearchResults/SearchResults.js";
 import { Playlist } from "../Playlist/Playlist.js";
+import { Spotify } from "../../util/Spotify.js";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchResults: [
-        {
-          name: "Shape of your body",
-          artist: "Ed Sheeren",
-          album: "Division",
-          id: "23",
-          uri: "lkj98123jls9",
-        },
-        {
-          name: "Monkey Wrench",
-          artist: "Foo Fighters",
-          album: "Something or other",
-          id: "234",
-          uri: "qiowe198",
-        },
-        {
-          name: "Bohemien Rhapsody",
-          artist: "Queen",
-          album: "Best of Queen",
-          id: "1",
-          uri: "ljowe0101",
-        },
-      ],
-      playlistName: "playlist name",
-      playlistTracks: [
-        {
-          name: "name of song",
-          artist: "name of artist",
-          album: "album name",
-          id: "id",
-          uri: "lkjsdf2309",
-        },
-      ],
+      searchResults: [],
+      playlistName: 'New Playlist',
+      playlistTracks: []
     };
 
     this.addTrack = this.addTrack.bind(this);
@@ -98,8 +69,12 @@ class App extends Component {
     });
   }
 
-  search(term){
-    console.log(term)
+  search(term) {
+    Spotify.search(term).then(searchResults => { 
+      // console.log('got here')
+      this.setState({
+      searchResults: searchResults
+    })})
   }
 
   render() {

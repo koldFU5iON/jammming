@@ -33,7 +33,7 @@ export class Track extends Component {
 
   render() {
     return (
-      <div className="Track">
+      <div className="Track" key={this.props.track.id}>
         <div className="Track-information">
           <h3>{this.props.track.name}</h3>
           <p>
