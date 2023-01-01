@@ -1,12 +1,18 @@
 let accessToken;
 
 // URL setup
-const redirect_uri = "&redirect_uri=http://localhost:3000/";
-const client_id = "&client_id=b3572cb44b614c32b3f02bd25673dff0";
 const base = "https://accounts.spotify.com/authorize";
-const response_type = "?response_type=token";
+const response_type = "token";
+const scope = "playlist-modify-public";
+const redirect_uri = "http://localhost:3000/";
+const client_id = "b3572cb44b614c32b3f02bd25673dff0";
 
-const endpoint = base + response_type + client_id + redirect_uri;
+let endpoint = base
+endpoint += `?response_type=${response_type}`
+endpoint += `&client_id=${client_id}`
+endpoint += `&scope=${scope}`
+endpoint += `&redirecto_uri=${redirect_uri}`
+
 export const Spotify = {
   getAccessToken() {
     if (accessToken) {
@@ -65,33 +71,33 @@ export const Spotify = {
       console.log(`No name or Track URI's were found`);
       return;
     }
-    const accessToken = this.getAccessToken()
+    const accessToken = this.getAccessToken();
     const headers = {
-      Authorization: `Bearer ${accessToken}`
+      Authorization: `Bearer ${accessToken}`,
     };
 
     // fetch User ID
     let userID = "";
     const endpoint = "https://api.spotify.com/v1/me";
 
-    console.log('Fetching User ID')
+    console.log("Fetching User ID");
     let response = await fetch(endpoint, {
       headers: headers,
     });
 
     if (response.ok) {
-        console.log('User ID found!')
+      console.log("User ID found!");
       const user = await response.json();
       userID = user.id;
     }
 
     // create a new playlist
     const playlistEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists`;
-    console.log(headers)
+    console.log(headers);
     response = await fetch(playlistEndpoint, {
-      method: 'POST',
+      method: "POST",
       headers: headers,
-      body: JSON.stringify({name: name})
+      body: JSON.stringify({ name: name }),
     });
 
     if (response.ok) {
