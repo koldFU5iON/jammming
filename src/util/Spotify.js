@@ -25,7 +25,7 @@ export const Spotify = {
 
       return accessToken;
     } else {
-      window.location = endpoint;
+      window.location.href = endpoint;
     }
   },
 
@@ -58,5 +58,46 @@ export const Spotify = {
     } catch (e) {
       console.error(`Full error: ${e}`);
     }
+  },
+
+  async savePlaylist(name, trackURIs) {
+    if (!name && !trackURIs) {
+      console.log(`No name or Track URI's were found`);
+      return;
+    }
+    const accessToken = this.getAccessToken()
+    const headers = {
+      Authorization: `Bearer ${accessToken}`
+    };
+
+    // fetch User ID
+    let userID = "";
+    const endpoint = "https://api.spotify.com/v1/me";
+
+    console.log('Fetching User ID')
+    let response = await fetch(endpoint, {
+      headers: headers,
+    });
+
+    if (response.ok) {
+        console.log('User ID found!')
+      const user = await response.json();
+      userID = user.id;
+    }
+
+    // create a new playlist
+    const playlistEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists`;
+    console.log(headers)
+    response = await fetch(playlistEndpoint, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({name: name})
+    });
+
+    if (response.ok) {
+      const playlist = await response.json();
+      console.log(playlist);
+    }
+    // throw new Error('Could not create new playlist')
   },
 };
