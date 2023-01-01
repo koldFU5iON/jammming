@@ -71,6 +71,8 @@ export const Spotify = {
   },
 
   async savePlaylist(name, trackURIs) {
+    const apiEndpoint = "https://api.spotify.com/v1/";
+
     if (!name && !trackURIs) {
       console.log(`No name or Track URI's were found`);
       return;
@@ -81,16 +83,12 @@ export const Spotify = {
     };
 
     // fetch User ID
-    const apiEndpoint = "https://api.spotify.com/v1/";
-
-    const user = await this.request(apiEndpoint + "me", {
+    const user = await this.request(`${apiEndpoint} + me`, {
       headers: headers,
     });
 
     // create a new playlist
-    const playlistEndpoint = `${apiEndpoint}users/${user.id}/playlists`;
-
-    const playlist = await this.request(playlistEndpoint, {
+    const playlist = await this.request(`${apiEndpoint}users/${user.id}/playlists`, {
       method: "POST",
       headers: headers,
       body: JSON.stringify({ name: name }),
