@@ -7,11 +7,11 @@ const scope = "playlist-modify-public";
 const redirect_uri = "http://localhost:3000/";
 const client_id = "b3572cb44b614c32b3f02bd25673dff0";
 
-let endpoint = base
-endpoint += `?response_type=${response_type}`
-endpoint += `&client_id=${client_id}`
-endpoint += `&scope=${scope}`
-endpoint += `&redirecto_uri=${redirect_uri}`
+let endpoint = base;
+endpoint += `?response_type=${response_type}`;
+endpoint += `&client_id=${client_id}`;
+endpoint += `&scope=${scope}`;
+endpoint += `&redirect_uri=${redirect_uri}`;
 
 export const Spotify = {
   getAccessToken() {
@@ -35,35 +35,39 @@ export const Spotify = {
     }
   },
 
-  async search(searchTerm) {
+  async request(url, args) {
     try {
-      const response = await fetch(
-        `https://api.spotify.com/v1/search?type=track&q=${searchTerm}`,
-        {
-          headers: { Authorization: `Bearer ${this.getAccessToken()}` },
-        }
-      );
+      const response = await fetch(url, args);
 
       if (response.ok) {
-        const foundTracks = await response.json();
-        let tracks = [];
-        if (foundTracks.tracks) {
-          tracks = foundTracks.tracks.items.map((track) => {
-            return {
-              id: track.id,
-              name: track.name,
-              artist: track.artists[0].name,
-              album: track.album.name,
-              uri: track.uri,
-            };
-          });
-        }
-        return tracks;
+        return response.json();
       }
-      throw new Error("There was an error fetching your request");
     } catch (e) {
-      console.error(`Full error: ${e}`);
+      console.error(e.message);
     }
+  },
+
+  async search(searchTerm) {
+    const foundTracks = await this.request(
+      `https://api.spotify.com/v1/search?type=track&q=${searchTerm}`,
+      {
+        headers: { Authorization: `Bearer ${this.getAccessToken()}` },
+      }
+    );
+
+    let tracks = [];
+    if (foundTracks.tracks) {
+      tracks = foundTracks.tracks.items.map((track) => {
+        return {
+          id: track.id,
+          name: track.name,
+          artist: track.artists[0].name,
+          album: track.album.name,
+          uri: track.uri,
+        };
+      });
+    }
+    return tracks;
   },
 
   async savePlaylist(name, trackURIs) {
@@ -77,33 +81,21 @@ export const Spotify = {
     };
 
     // fetch User ID
-    let userID = "";
-    const endpoint = "https://api.spotify.com/v1/me";
+    const apiEndpoint = "https://api.spotify.com/v1/";
 
-    console.log("Fetching User ID");
-    let response = await fetch(endpoint, {
+    const user = await this.request(apiEndpoint + "me", {
       headers: headers,
     });
 
-    if (response.ok) {
-      console.log("User ID found!");
-      const user = await response.json();
-      userID = user.id;
-    }
-
     // create a new playlist
-    const playlistEndpoint = `https://api.spotify.com/v1/users/${userID}/playlists`;
-    console.log(headers);
-    response = await fetch(playlistEndpoint, {
+    const playlistEndpoint = `${apiEndpoint}users/${user.id}/playlists`;
+
+    const playlist = await this.request(playlistEndpoint, {
       method: "POST",
       headers: headers,
       body: JSON.stringify({ name: name }),
     });
 
-    if (response.ok) {
-      const playlist = await response.json();
-      console.log(playlist);
-    }
-    // throw new Error('Could not create new playlist')
+    console.log(playlist);
   },
 };
