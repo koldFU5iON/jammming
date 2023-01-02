@@ -42,6 +42,7 @@ export const Spotify = {
       if (response.ok) {
         return response.json();
       }
+      return;
     } catch (e) {
       console.error(e.message);
     }
@@ -80,6 +81,7 @@ export const Spotify = {
     const accessToken = this.getAccessToken();
     const headers = {
       Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
     };
 
     // fetch User ID
@@ -87,13 +89,26 @@ export const Spotify = {
       headers: headers,
     });
 
-    // create a new playlist
-    const playlist = await this.request(`${apiEndpoint}users/${user.id}/playlists`, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify({ name: name }),
-    });
+    if (user.id) {
+      // create a new playlist
+      const playlist = await this.request(
+        `${apiEndpoint}users/${user.id}/playlists`,
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ name: name }),
+        }
+      );
+      console.log(playlist.id);
+      console.log(trackURIs)
 
-    console.log(playlist);
+      const newPlaylist = this.request(`${apiEndpoint}playlists/${playlist.id}/tracks`,{
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({uris: trackURIs}) 
+      })
+
+      return newPlaylist.id
+    }
   },
 };
